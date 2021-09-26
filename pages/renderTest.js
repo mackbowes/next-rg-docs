@@ -1,26 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-//import text from './lead-a-raid.md';
 
-export default function renderTest() {
-  const markdown = `A paragraph with *emphasis* and **strong importance**.
+export default function renderTest(markdown) {
+  const getData = async () => {
+    // membership = getMember();
+    const membership = true;
+    let body = { membership };
+    body = JSON.stringify(body);
 
-  > A block quote with ~strikethrough~ and a URL: https://reactjs.org.
+    let myHeaders = new Headers();
+    const myInit = {
+      method: 'POST',
+      headers: myHeaders,
+      mode: 'cors',
+      cache: 'default',
+      body,
+      membership: true,
+    };
+    const url = '/api/test';
+    const response = await fetch(url, myInit);
+    const resJson = await response.json();
+    const theNumberFive = 5;
+    console.log(theNumberFive);
+    return theNumberFive;
+  };
 
-  * Lists
-  * [ ] todo
-  * [x] done
-
-  A table:
-
-  | a | b |
-  | - | - |
-  `;
+  markdown = 'Placeholder';
 
   return (
     <div>
-      <ReactMarkdown children={markdown} remarkPlugins={[remarkGfm]} />
+      {<ReactMarkdown children={markdown} remarkPlugins={[remarkGfm]} />}
     </div>
   );
 }

@@ -15,15 +15,31 @@ a {
   box-sizing: border-box;
 }
 
-nav {
+.page-container {
+	display: flex;
+	flex-flow: row nowrap;
+}
+
+.sidebar {
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
 	min-width: 50ch;
 	border-right: 1px solid black;
 	justify-content: space-around;
-	position: absolute;
 	left: 0;
 	top: 0;
 	background-color: white;
+}
+
+
+
+.flex {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-evenly;
+	padding: 2rem 1.5rem;
+	background-color: black;
+	border-top: 2px solid red;
 }

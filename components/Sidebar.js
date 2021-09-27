@@ -9,7 +9,7 @@ export const Sidebar = (props) => {
 	console.log('links: ', links);
 	return (
 		<>
-			<nav>
+			<nav className="sidebar">
 				{Object.keys(links).map(link => {
 					return <a href={links[link].href}>{links[link].name}</a>
 				})}

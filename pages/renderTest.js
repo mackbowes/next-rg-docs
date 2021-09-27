@@ -4,7 +4,6 @@ import remarkGfm from 'remark-gfm';
 import { Sidebar, NormalTwoArgFunction } from '../components/Sidebar';
 
 export default function renderTest() {
-
 	/**
 	 * getData is an async function to 
 	 * a) check status of the user's current metamask/web3 provider address
@@ -43,10 +42,10 @@ export default function renderTest() {
 	useEffect(async () => {
 		const returnedData = await getData();
 		setPageData(returnedData.msg);
-	})
+	}, []);
 
 	return (
-		<div>
+		<div className="page-container">
 			<Sidebar Links={
 				{
 					link1: {
@@ -59,7 +58,9 @@ export default function renderTest() {
 					}
 				}
 			} />
-			<ReactMarkdown children={pageData} remarkPlugins={[remarkGfm]} />
+			<div>
+				<ReactMarkdown children={pageData} remarkPlugins={[remarkGfm]} />
+			</div>
 		</div>
 	);
 }

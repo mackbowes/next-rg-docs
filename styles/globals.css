@@ -14,3 +14,16 @@ a {
 * {
   box-sizing: border-box;
 }
+
+nav {
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	min-width: 50ch;
+	border-right: 1px solid black;
+	justify-content: space-around;
+	position: absolute;
+	left: 0;
+	top: 0;
+	background-color: white;
+}

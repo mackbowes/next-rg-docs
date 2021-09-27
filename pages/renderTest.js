@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { Sidebar, NormalTwoArgFunction } from '../components/Sidebar';
 
 export default function renderTest() {
+
 	/**
 	 * getData is an async function to 
 	 * a) check status of the user's current metamask/web3 provider address
@@ -45,6 +47,18 @@ export default function renderTest() {
 
 	return (
 		<div>
+			<Sidebar Links={
+				{
+					link1: {
+						name: 'Getting Started',
+						href: '/getting-started'
+					},
+					link2: {
+						name: 'SDK',
+						href: '/sdk'
+					}
+				}
+			} />
 			<ReactMarkdown children={pageData} remarkPlugins={[remarkGfm]} />
 		</div>
 	);

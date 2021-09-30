@@ -20,11 +20,20 @@ const Sidebar = (props) => {
 		<div className={styles.sidebar}>
 			{Object.keys(data).map((category) => {
 
-				// todo: logic to split CamelCased words
+				// create spaces before internal capital letters
+				const categoryCharArray = [...category];
+				const newCategoryCharArray = categoryCharArray.map((char, index) => {
+					if (/[A-Z]/.test(char) && index > 0) {
+						return ` ${char}`
+					} else {
+						return char
+					}
+				});
+				let cleanedCategory = newCategoryCharArray.join('');
 
 				return (
 					<>
-						<h2>{category}</h2>
+						<h2>{cleanedCategory}</h2>
 						{data[category].map((item, index) => {
 							return <a href={`/${category}/${item.slug}`}>{item.title}</a>
 						})}

@@ -3,6 +3,7 @@ import Head from 'next/head';
 import useSWR from 'swr'
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import matter from "gray-matter";
 import { PageWrapper } from '../../components/PageWrapper';
 import { MetaData } from '../../components/Metadata';
 
@@ -11,7 +12,8 @@ import { MetaData } from '../../components/Metadata';
 export default function Home(props) {
 
 	const [pageData, setPageData] = useState();
-	const [currentPage, setCurrentPage] = useState();
+	const [currentPageData, setCurrentPageData] = useState();
+	const [currentPageContent, setCurrentPageContent] = useState();
 	const [currentSlug, setCurrentSlug] = useState();
 	const [slugParameters, setSlugParameters] = useState();
 
@@ -36,7 +38,9 @@ export default function Home(props) {
 			// console.log(pageData[slugParameters[0]]);
 			pageData[slugParameters[0]].forEach((post) => {
 				if (slugParameters[1] === post.slug) {
-					setCurrentPage(post);
+					const { data, content } = matter(post.fileContent);
+					setCurrentPageData(data);
+					setCurrentPageContent(content);
 				}
 			});
 		}
@@ -45,11 +49,12 @@ export default function Home(props) {
 
 	return (
 		<>
-			{(typeof currentPage !== 'undefined') &&
+			{(typeof currentPageData !== 'undefined' && typeof currentPageContent !== 'undefined') &&
 				<>
-					<MetaData title={currentPage.title} />
+					<MetaData title={currentPageData.title} />
 					<PageWrapper sidebarData={pageData}>
-						<ReactMarkdown children={currentPage.fileContent} remarkPlugins={[remarkGfm]} />
+						<h2>{currentPageData.title}</h2>
+						<ReactMarkdown children={currentPageContent} remarkPlugins={[remarkGfm]} />
 					</PageWrapper>
 				</>
 			}

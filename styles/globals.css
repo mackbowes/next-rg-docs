@@ -22,9 +22,14 @@ h1, h2, h3 {
 	font-family: 'Uncial Antiqua', cursive;
 }
 
-h4, h5, h6, p, ul, ol, blockquote, li {
+h4, h5, h6, p, ul, ol, blockquote, li, a {
 	font-family: 'Texturina', Arial, serif;
 }
+
+a:hover {
+	color: rgb(245, 56, 98);
+}
+
 
 code {
 	font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;

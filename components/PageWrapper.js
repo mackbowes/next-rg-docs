@@ -5,6 +5,7 @@ export const PageWrapper = (props) => {
 	return (
 		<div className={styles.mainWrapper}>
 			<Sidebar data={props.sidebarData} />
+			<div data='spacer'></div>
 			<div className={styles.pageWrapper}>
 				{props.children}
 			</div>
@@ -14,10 +15,21 @@ export const PageWrapper = (props) => {
 
 const Sidebar = (props) => {
 	const data = props.data;
+	console.log(data);
 	return (
 		<div className={styles.sidebar}>
-			{data?.map(datum => {
-				return <a href={`/docs/${datum.slug}`}>{datum.slug}</a>
+			{Object.keys(data).map((category) => {
+
+				// todo: logic to split CamelCased words
+
+				return (
+					<>
+						<h2>{category}</h2>
+						{data[category].map((item, index) => {
+							return <a href={`/${category}/${item.slug}`}>{item.title}</a>
+						})}
+					</>
+				)
 			})}
 		</div>
 	)

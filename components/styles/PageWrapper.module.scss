@@ -16,6 +16,10 @@
 	flex-flow: column nowrap;
 	overflow-y: scroll;
 	height: 100vh;
-	width: 25vh;
+	min-width: 25vh;
+	padding: 2ex 2em;
 	position: fixed;
+	&::-webkit-scrollbar {
+		display: none;
+	}
 }

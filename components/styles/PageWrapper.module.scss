@@ -1,0 +1,21 @@
+.mainWrapper {
+	display: grid;
+	grid-template-columns: 1fr 3fr;
+}
+
+.pageWrapper {
+	display: block;
+	padding: 2ex 2em;
+	p {
+		max-width: 60ch;
+	}
+}
+
+.sidebar {
+	display: flex;
+	flex-flow: column nowrap;
+	overflow-y: scroll;
+	height: 100vh;
+	width: 25vh;
+	position: fixed;
+}

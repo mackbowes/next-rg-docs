@@ -1,3 +1,4 @@
+import { loadComponents } from 'next/dist/server/load-components';
 import React, { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -44,23 +45,33 @@ export default function renderTest() {
 		setPageData(returnedData.msg);
 	}, []);
 
-	return (
-		<div className="page-container">
-			<Sidebar Links={
-				{
-					link1: {
-						name: 'Getting Started',
-						href: '/getting-started'
-					},
-					link2: {
-						name: 'SDK',
-						href: '/sdk'
-					}
+
+
+
+	const objectToBeStored = {
+		markdown: {
+			slug: {`# hello World`
+		},
+	},
+}
+
+return (
+	<div className="page-container">
+		<Sidebar Links={
+			{
+				link1: {
+					name: 'Getting Started',
+					href: '/getting-started'
+				},
+				link2: {
+					name: 'SDK',
+					href: '/sdk'
 				}
-			} />
-			<div>
-				<ReactMarkdown children={pageData} remarkPlugins={[remarkGfm]} />
-			</div>
+			}
+		} />
+		<div>
+			<ReactMarkdown children={pageData} remarkPlugins={[remarkGfm]} />
 		</div>
-	);
+	</div>
+);
 }

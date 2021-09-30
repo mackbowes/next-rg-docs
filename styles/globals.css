@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Texturina:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
 html,
 body {
   padding: 0;
@@ -15,31 +18,14 @@ a {
   box-sizing: border-box;
 }
 
-.page-container {
-	display: flex;
-	flex-flow: row nowrap;
+h1, h2, h3 {
+	font-family: 'Uncial Antiqua', cursive;
 }
 
-.sidebar {
-	display: flex;
-	flex-direction: column;
-	height: 100vh;
-	min-width: 50ch;
-	border-right: 1px solid black;
-	justify-content: space-around;
-	left: 0;
-	top: 0;
-	background-color: white;
+h4, h5, h6, p, ul, ol, blockquote, li {
+	font-family: 'Texturina', Arial, serif;
 }
 
-
-
-.flex {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: space-evenly;
-	padding: 2rem 1.5rem;
-	background-color: black;
-	border-top: 2px solid red;
+code {
+	font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }

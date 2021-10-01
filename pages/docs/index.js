@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { PageWrapper } from '../../components/PageWrapper';
-import { isMember } from '../../lib/getMember';
+import { getSignature } from '../../lib/getSignature';
+import { getPrivateData } from '../../lib/getPrivateData';
+import Head from 'next/head';
 
 export default function Page() {
 
@@ -15,11 +17,10 @@ export default function Page() {
 		setPageData(resJson.data);
 		if (!window?.sessionStorage.getItem('privateData') && true) {
 			// get private data IFF it hasn't already been got and the user is allowed
-			const privateResponse = await fetch('/api/getPrivateDocs');
-			const privateResJson = await privateResponse.json();
-			const stringifiedPrivateData = JSON.stringify(privateResJson.data);
+			const privateResponse = await getPrivateData(await getSignature());
+			const stringifiedPrivateData = JSON.stringify(privateResponse.data);
 			window.sessionStorage.setItem('privateData', stringifiedPrivateData);
-			setPrivatePageData(privateResJson.data);
+			setPrivatePageData(privateResponse.data);
 		}
 		if (window?.sessionStorage.getItem('privateData')) {
 			const stringifiedPrivateData = window.sessionStorage.getItem('privateData');
@@ -30,20 +31,22 @@ export default function Page() {
 
 	// Set current page to the first item in the PageData array
 	useEffect(() => {
-		const publicCategories = Object.keys(pageData);
-		console.log(pageData[publicCategories[0]]);
-	}, [pageData, privatePageData])
+		if (typeof pageData !== 'undefined') {
+			const publicCategories = Object.keys(pageData);
+			console.log(publicCategories);
+		}
+	}, [pageData, privatePageData]);
 
 	return (
 		<>
-			{(typeof currentPageData !== 'undefined' && typeof currentPageContent !== 'undefined') &&
+			{(typeof pageData !== 'undefined') &&
 				<>
 					<Head>
 						<title>Docs Overview</title>
 					</Head>
 					<PageWrapper sidebarData={pageData} privatePageData={privatePageData}>
-						<h2>{currentPageData.title}</h2>
-						<ReactMarkdown children={currentPageContent} remarkPlugins={[remarkGfm]} />
+						<h2>Docs Overview</h2>
+
 					</PageWrapper>
 				</>
 			}

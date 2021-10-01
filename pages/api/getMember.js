@@ -23,7 +23,9 @@ export default async function isMember() {
 	const accountFromSignature = checkSignature(message, signature)
 	console.log('Account from signature is ', accountFromSignature)
 
-	const contractAddress = '0xD83AC7D30495e1E1d2f42a0D796a058089719a45'
+
+	// anything that needs 'contactAddress' needs to be in a /api/[file]
+	const contractAddress = ''
 	const abi = [
 		{
 			type: 'function',

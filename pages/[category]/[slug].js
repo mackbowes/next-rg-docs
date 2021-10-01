@@ -5,7 +5,8 @@ import remarkGfm from 'remark-gfm';
 import matter from "gray-matter";
 import { PageWrapper } from '../../components/PageWrapper';
 import { MetaData } from '../../components/Metadata';
-import { isMember } from '../../lib/getMember';
+import { getSignature } from '../../lib/getSignature';
+import { getPrivateData } from '../../lib/getPrivateData';
 
 
 
@@ -23,13 +24,16 @@ export default function Home(props) {
 		const response = await fetch('/api/getPublicDocs');
 		const resJson = await response.json();
 		setPageData(resJson.data);
-		if (!window?.sessionStorage.getItem('privateData') && await isMember()) {
+
+
+
+
+		if (!window?.sessionStorage.getItem('privateData')) {
 			// get private data IFF it hasn't already been got and the user is allowed
-			const privateResponse = await fetch('/api/getPrivateDocs');
-			const privateResJson = await privateResponse.json();
-			const stringifiedPrivateData = JSON.stringify(privateResJson.data);
+			const privateResponse = await getPrivateData(await getSignature());
+			const stringifiedPrivateData = JSON.stringify(privateResponse);
 			window.sessionStorage.setItem('privateData', stringifiedPrivateData);
-			setPrivatePageData(privateResJson.data);
+			setPrivatePageData(privateResponse.data);
 		}
 		if (window?.sessionStorage.getItem('privateData')) {
 			const stringifiedPrivateData = window.sessionStorage.getItem('privateData');
@@ -49,7 +53,7 @@ export default function Home(props) {
 
 	useEffect(() => {
 		if (typeof slugParameters !== 'undefined' && typeof pageData !== 'undefined') {
-			pageData[slugParameters[0]].forEach((post) => {
+			pageData[slugParameters[0]]?.forEach((post) => {
 				if (slugParameters[1] === post.slug) {
 					const { data, content } = matter(post.fileContent);
 					setCurrentPageData(data);
@@ -57,7 +61,9 @@ export default function Home(props) {
 				}
 			});
 			if (typeof privatePageData !== 'undefined') {
-				privatePageData[slugParameters[0]].forEach((post) => {
+				console.log(privatePageData);
+				privatePageData[slugParameters[0]]?.forEach((post) => {
+					// updates current page if private data is available only
 					if (slugParameters[1] === post.slug) {
 						const { data, content } = matter(post.fileContent);
 						setCurrentPageData(data);

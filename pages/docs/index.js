@@ -1,29 +1,19 @@
-import { useEffect, useState } from 'react';
-import Head from 'next/head';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import matter from "gray-matter";
+import { useState, useEffect } from 'react';
 import { PageWrapper } from '../../components/PageWrapper';
-import { MetaData } from '../../components/Metadata';
 import { isMember } from '../../lib/getMember';
 
-
-
-export default function Home(props) {
+export default function Page() {
 
 	const [pageData, setPageData] = useState();
 	const [privatePageData, setPrivatePageData] = useState();
 	const [currentPageData, setCurrentPageData] = useState();
 	const [currentPageContent, setCurrentPageContent] = useState();
-	const [currentSlug, setCurrentSlug] = useState();
-	const [slugParameters, setSlugParameters] = useState();
 
 	useEffect(async () => {
-		setCurrentSlug(window.location.pathname);
 		const response = await fetch('/api/getPublicDocs');
 		const resJson = await response.json();
 		setPageData(resJson.data);
-		if (!window?.sessionStorage.getItem('privateData') && await isMember()) {
+		if (!window?.sessionStorage.getItem('privateData') && true) {
 			// get private data IFF it hasn't already been got and the user is allowed
 			const privateResponse = await fetch('/api/getPrivateDocs');
 			const privateResJson = await privateResponse.json();
@@ -38,44 +28,18 @@ export default function Home(props) {
 		}
 	}, []);
 
+	// Set current page to the first item in the PageData array
 	useEffect(() => {
-		setSlugParameters();
-		if (typeof currentSlug !== 'undefined') {
-			let slugParams = currentSlug?.split("/");
-			slugParams.splice(0, 1);
-			setSlugParameters(slugParams);
-		}
-	}, [currentSlug]);
-
-	useEffect(() => {
-		if (typeof slugParameters !== 'undefined' && typeof pageData !== 'undefined') {
-			pageData[slugParameters[0]].forEach((post) => {
-				if (slugParameters[1] === post.slug) {
-					const { data, content } = matter(post.fileContent);
-					setCurrentPageData(data);
-					setCurrentPageContent(content);
-				}
-			});
-			if (typeof privatePageData !== 'undefined') {
-				privatePageData[slugParameters[0]].forEach((post) => {
-					if (slugParameters[1] === post.slug) {
-						const { data, content } = matter(post.fileContent);
-						setCurrentPageData(data);
-						setCurrentPageContent(content);
-					}
-				});
-			}
-		}
-
-	}, [pageData, slugParameters, privatePageData])
-
+		const publicCategories = Object.keys(pageData);
+		console.log(pageData[publicCategories[0]]);
+	}, [pageData, privatePageData])
 
 	return (
 		<>
 			{(typeof currentPageData !== 'undefined' && typeof currentPageContent !== 'undefined') &&
 				<>
 					<Head>
-						<title>{currentPageData.title}</title>
+						<title>Docs Overview</title>
 					</Head>
 					<PageWrapper sidebarData={pageData} privatePageData={privatePageData}>
 						<h2>{currentPageData.title}</h2>
@@ -83,8 +47,6 @@ export default function Home(props) {
 					</PageWrapper>
 				</>
 			}
-
 		</>
 	)
 }
-

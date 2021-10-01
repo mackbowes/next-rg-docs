@@ -1,10 +1,11 @@
 import styles from './styles/PageWrapper.module.scss';
+import { useState } from 'react';
 
 export const PageWrapper = (props) => {
 
 	return (
 		<div className={styles.mainWrapper}>
-			<Sidebar data={props.sidebarData} />
+			<Sidebar data={props.sidebarData} privateData={props.privatePageData} />
 			<div data='spacer'></div>
 			<div className={styles.pageWrapper}>
 				{props.children}
@@ -15,9 +16,27 @@ export const PageWrapper = (props) => {
 
 const Sidebar = (props) => {
 	const data = props.data;
-	console.log(data);
 	return (
 		<div className={styles.sidebar}>
+			<Toggler label="Public Data">
+				<SidebarList data={data} />
+			</Toggler>
+			{((typeof props.privateData !== 'undefined') && props.privateData)
+				?
+				<>
+					<Toggler label="Private Data">
+						<SidebarList data={props.privateData} />
+					</Toggler>
+				</>
+				: null}
+		</div>
+	)
+}
+
+const SidebarList = ({ data }) => {
+
+	return (
+		<>
 			{Object.keys(data).map((category) => {
 
 				// create spaces before internal capital letters
@@ -40,6 +59,27 @@ const Sidebar = (props) => {
 					</>
 				)
 			})}
-		</div>
+		</>
 	)
+}
+
+const Toggler = (props) => {
+	const [isOpen, setIsOpen] = useState(props.isOpen);
+
+	const toggle = () => {
+		setIsOpen(v => !v);
+	}
+
+	return (
+		<>
+			<h2 style={{ userSelect: 'none' }} onClick={() => toggle()}>{props.label} {(isOpen) ? 'v' : '>'}</h2>
+			{
+				(isOpen)
+					? props.children
+					: null
+			}
+		</>
+	)
+
+
 }

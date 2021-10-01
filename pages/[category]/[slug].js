@@ -6,12 +6,14 @@ import remarkGfm from 'remark-gfm';
 import matter from "gray-matter";
 import { PageWrapper } from '../../components/PageWrapper';
 import { MetaData } from '../../components/Metadata';
+import { oldGetMembers } from '../../lib/getMember';
 
 
 
 export default function Home(props) {
 
 	const [pageData, setPageData] = useState();
+	const [privatePageData, setPrivatePageData] = useState();
 	const [currentPageData, setCurrentPageData] = useState();
 	const [currentPageContent, setCurrentPageContent] = useState();
 	const [currentSlug, setCurrentSlug] = useState();
@@ -22,6 +24,12 @@ export default function Home(props) {
 		const response = await fetch('/api/getPublicDocs');
 		const resJson = await response.json();
 		setPageData(resJson.data);
+		if (!sessionStorage.getItem('privateData') && await oldGetMembers()) {
+			// get private data IFF it hasn't already been got and the user is allowed
+			const privateResponse = await fetch('/api/getPrivateDocs');
+			const privateResJson = await privateResponse.json();
+			setPrivatePageData(privateResJson.data);
+		}
 	}, []);
 
 	useEffect(() => {
@@ -52,7 +60,7 @@ export default function Home(props) {
 			{(typeof currentPageData !== 'undefined' && typeof currentPageContent !== 'undefined') &&
 				<>
 					<MetaData title={currentPageData.title} />
-					<PageWrapper sidebarData={pageData}>
+					<PageWrapper sidebarData={pageData} privatePageData={privatePageData}>
 						<h2>{currentPageData.title}</h2>
 						<ReactMarkdown children={currentPageContent} remarkPlugins={[remarkGfm]} />
 					</PageWrapper>

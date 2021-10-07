@@ -21,13 +21,18 @@ export default function Home(props) {
 
 	useEffect(async () => {
 		setCurrentSlug(window.location.pathname);
-		const response = await fetch('/api/getPublicDocs');
-		const resJson = await response.json();
-		setPageData(resJson.data);
-
-
-
-
+		if (!window?.sessionStorage.getItem('publicData')) {
+			const response = await fetch('/api/getPublicDocs');
+			const resJson = await response.json();
+			const stringifiedPublicData = JSON.stringify(resJson.data);
+			window.sessionStorage.setItem('publicData', stringifiedPublicData);
+			setPageData(resJson.data);
+		}
+		if (window?.sessionStorage.getItem('publicData')) {
+			const stringifiedPublicData = window.sessionStorage.getItem('publicData');
+			const publicData = JSON.parse(stringifiedPublicData);
+			setPageData(publicData);
+		}
 		if (!window?.sessionStorage.getItem('privateData')) {
 			// get private data IFF it hasn't already been got and the user is allowed
 			const privateResponse = await getPrivateData(await getSignature());

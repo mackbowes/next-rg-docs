@@ -1,13 +1,4 @@
-import { useEffect, useState } from 'react';
-import useSWR from 'swr'
-import Head from 'next/head';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import { PageWrapper } from '../components/PageWrapper';
-import getMember from './api/getMember';
-
-
-export default function Home(props) {
+export default function Home() {
 
 	const goToDocsIndex = () => {
 		window.location.pathname = '/docs';
@@ -24,4 +15,3 @@ export default function Home(props) {
 		</>
 	);
 }
-

@@ -8,8 +8,6 @@ import { MetaData } from '../../components/Metadata';
 import { getSignature } from '../../lib/getSignature';
 import { getPrivateData } from '../../lib/getPrivateData';
 
-
-
 export default function Home(props) {
 
 	const [pageData, setPageData] = useState();
@@ -98,4 +96,3 @@ export default function Home(props) {
 		</>
 	)
 }
-

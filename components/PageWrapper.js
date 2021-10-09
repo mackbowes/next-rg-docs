@@ -1,5 +1,6 @@
 import styles from './styles/PageWrapper.module.scss';
 import { useState } from 'react';
+import { Box, VStack, Flex, Heading } from '@chakra-ui/react'
 
 export const PageWrapper = (props) => {
 
@@ -14,24 +15,7 @@ export const PageWrapper = (props) => {
 	)
 }
 
-const Sidebar = (props) => {
-	const data = props.data;
-	return (
-		<div className={styles.sidebar}>
-			<Toggler label="Public Data">
-				<SidebarList data={data} />
-			</Toggler>
-			{((typeof props.privateData !== 'undefined') && props.privateData)
-				?
-				<>
-					<Toggler label="Private Data">
-						<SidebarList data={props.privateData} />
-					</Toggler>
-				</>
-				: null}
-		</div>
-	)
-}
+
 
 const SidebarList = ({ data }) => {
 
@@ -72,7 +56,10 @@ const Toggler = (props) => {
 
 	return (
 		<>
-			<h2 style={{ userSelect: 'none' }} onClick={() => toggle()}>{props.label} {(isOpen) ? 'v' : '>'}</h2>
+			<Heading
+				color="brand.100"
+				sx={{ userSelect: 'none' }}
+				onClick={() => toggle()}>{props.label} {(isOpen) ? 'v' : '>'}</Heading>
 			{
 				(isOpen)
 					? props.children
@@ -82,4 +69,31 @@ const Toggler = (props) => {
 	)
 
 
+}
+
+export const Sidebar = (props) => {
+	const data = props.data;
+	return (
+		<Box
+			color="brand.500"
+			h='100vh'
+			w="100%"
+			bg="brand.900"
+			p={5}
+			sx={{ borderRight: `3px solid`, borderColor: "brand.500" }}
+		>
+
+			<Toggler label="Public Data">
+				<SidebarList data={data} />
+			</Toggler>
+			{((typeof props.privateData !== 'undefined') && props.privateData)
+				?
+				<>
+					<Toggler label="Private Data">
+						<SidebarList data={props.privateData} />
+					</Toggler>
+				</>
+				: null}
+		</Box>
+	)
 }

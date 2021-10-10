@@ -11,6 +11,7 @@ import { getSignature } from '../../lib/getSignature';
 import { getPrivateData } from '../../lib/getPrivateData';
 import { Center, Heading, Box, VStack, Grid } from '@chakra-ui/react'
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
+import { components } from '../../themes/MarkdownComponents'
 
 export default function Home(props) {
 
@@ -83,6 +84,7 @@ export default function Home(props) {
 	}, [pageData, slugParameters, privatePageData])
 
 
+
 	return (
 		<>
 			{(typeof currentPageData !== 'undefined' && typeof currentPageContent !== 'undefined') &&
@@ -99,15 +101,14 @@ export default function Home(props) {
 							<Box sx={{
 								backgroundColor: `brand.900`,
 								padding: `2rem`,
-								color: 'brand.500',
+								color: 'white',
 								overflowY: `scroll`,
 								maxHeight: `100vh`
 							}}>
-
 								<ReactMarkdown
-									components={ChakraUIRenderer()}
+									components={ChakraUIRenderer(components)}
 									children={currentPageContent}
-									remarkPlugins={[remarkHtml, remarkRehype, remarkGfm, remarkImages,]}
+									remarkPlugins={[remarkHtml, remarkRehype, remarkGfm, remarkImages]}
 									escapeHtml={false}
 								/>
 							</Box>

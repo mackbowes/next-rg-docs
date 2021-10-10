@@ -3,6 +3,7 @@ import "@fontsource/texturina/500.css" // you can import multiple weights
 import "@fontsource/open-sans/500.css"
 import { ChakraProvider } from '@chakra-ui/react'
 import { theme } from '../themes/Default'
+import '../styles/globals.css'
 
 
 function MyApp({ Component, pageProps }) {

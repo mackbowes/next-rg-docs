@@ -23,8 +23,8 @@ const fonts = {
 const markdown = {
 	p: props => {
 		const { children } = props;
-		return <Box sx={{ fontSize: `1rem`, maxWidth: `65ch` }}><Text>{children}</Text></Box>
-	}
+		return <Box><Text sx={{ fontSize: `1rem`, maxWidth: `65ch` }}>{children}</Text></Box>
+	},
 }
 
 // export the theme to provide to ChakraProvider in pages/_app

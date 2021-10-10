@@ -48,3 +48,7 @@ blockquote {
 code {
 	font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
+
+.chakra-image.css-0 {
+	max-height: 50vh !important;
+}

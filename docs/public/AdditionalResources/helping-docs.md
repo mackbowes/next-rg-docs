@@ -14,7 +14,7 @@ Go to your Metamask wallet, click on the networks tab and go to “Custom RPC”
 
 **Input the following in each of the blanks:**
 
-<img src="https://i.imgur.com/vBnGM5N.png" alt="Metamask RPC Setup"/>
+![Metamask RPC Setup](https://i.imgur.com/vBnGM5N.png)
 
 ### Step 2:
 

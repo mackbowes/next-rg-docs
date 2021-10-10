@@ -20,5 +20,12 @@ const fonts = {
 	body: 'Open Sans'
 }
 
+const markdown = {
+	p: props => {
+		const { children } = props;
+		return <Box sx={{ fontSize: `1rem`, maxWidth: `65ch` }}><Text>{children}</Text></Box>
+	}
+}
+
 // export the theme to provide to ChakraProvider in pages/_app
-export const theme = extendTheme({ colors, fonts })
+export const theme = extendTheme({ colors, fonts, markdown })

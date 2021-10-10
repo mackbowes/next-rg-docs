@@ -1,12 +1,24 @@
+import { useEffect } from 'react'
 import { Center, Heading, Box, VStack } from '@chakra-ui/react'
 import Image from 'next/image'
+import { ethers } from "ethers";
 export default function Home() {
+
+
 
 	// EnterApp component in this file should be the event trigger for opening the web3 portion of the app.
 	// Confirming web3 existence and current network *could* happen on this page
 
-	const goToDocsIndex = () => {
+	const goToDocsIndex = async () => {
+		await getMetamask()
 		window.location.pathname = '/docs';
+	}
+	async function getMetamask() {
+		const provider = new ethers.providers.Web3Provider(window.ethereum)
+		console.log(provider);
+		await provider.send("eth_requestAccounts", []);
+		const signer = provider.getSigner()
+		await signer.getAddress()
 	}
 
 	return (
@@ -17,7 +29,7 @@ export default function Home() {
 					<Heading as="h2" size="xl" sx={{ textAlign: `center`, textShadow: `0px 4px black` }}>Hark! Adventurers!<br /> Observe a new tool for slaying Moloch:</Heading>
 					<Heading as="h1" size="3xl" sx={{ textAlign: `center`, textShadow: `0px 4px black` }}>Web3 Powered Documentation</Heading>
 					<Heading as="h2" size="xl" sx={{ textAlign: `center`, textShadow: `0px 4px black` }}>Smart-Contract Secured Arcana</Heading>
-					<EnterApp onClick={() => goToDocsIndex()} />
+					<EnterApp onClick={async () => await goToDocsIndex()} />
 				</VStack>
 			</Center>
 			<ByRaidGuild />

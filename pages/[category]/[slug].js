@@ -2,11 +2,15 @@ import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import remarkImages from 'remark-images';
+import remarkRehype from 'remark-rehype';
+import remarkHtml from 'remark-html';
 import matter from "gray-matter";
-import { PageWrapper } from '../../components/PageWrapper';
-import { MetaData } from '../../components/Metadata';
+import { Sidebar } from '../../components/PageWrapper';
 import { getSignature } from '../../lib/getSignature';
 import { getPrivateData } from '../../lib/getPrivateData';
+import { Center, Heading, Box, VStack, Grid } from '@chakra-ui/react'
+import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
 
 export default function Home(props) {
 
@@ -86,10 +90,29 @@ export default function Home(props) {
 					<Head>
 						<title>{currentPageData.title}</title>
 					</Head>
-					<PageWrapper sidebarData={pageData} privatePageData={privatePageData}>
-						<h2>{currentPageData.title}</h2>
-						<ReactMarkdown children={currentPageContent} remarkPlugins={[remarkGfm]} />
-					</PageWrapper>
+
+
+
+					<Box h="100vh" w="100vw" sx={{ position: `relative` }}>
+						<Grid templateColumns="1fr 4fr" >
+							<Sidebar data={pageData} />
+							<Box sx={{
+								backgroundColor: `brand.900`,
+								padding: `2rem`,
+								color: 'brand.500',
+								overflowY: `scroll`,
+								maxHeight: `100vh`
+							}}>
+
+								<ReactMarkdown
+									components={ChakraUIRenderer()}
+									children={currentPageContent}
+									remarkPlugins={[remarkHtml, remarkRehype, remarkGfm, remarkImages,]}
+									escapeHtml={false}
+								/>
+							</Box>
+						</Grid>
+					</Box>
 				</>
 			}
 		</>

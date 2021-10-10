@@ -19,6 +19,7 @@ export const PageWrapper = (props) => {
 
 const SidebarList = ({ data }) => {
 
+
 	return (
 		<>
 			{Object.keys(data).map((category) => {
@@ -36,13 +37,47 @@ const SidebarList = ({ data }) => {
 
 				return (
 					<>
-						<h2>{cleanedCategory}</h2>
+						<SidebarListItem category={category} data={data} cleanedCategory={cleanedCategory} />
+						{/* <Heading as="h2" sx={{ fontSize: '1.5rem', margin: `1ex 0` }}>{cleanedCategory}</Heading>
 						{data[category].map((item, index) => {
-							return <a href={`/${category}/${item.slug}`}>{item.title}</a>
-						})}
+							return <a key={`${item}--${index}`} href={`/${category}/${item.slug}`}>
+								<Heading sx={{ fontSize: `1.25rem`, margin: `.5ex 1em` }} _hover={{ color: `white` }}>{item.title}</Heading>
+							</a>
+						})} */}
 					</>
 				)
 			})}
+		</>
+	)
+}
+
+const SidebarListItem = (props) => {
+
+	const [isOpen, setIsOpen] = useState(true);
+
+	const toggleOpen = () => {
+		setIsOpen(v => !v);
+	}
+
+	return (
+		<>
+			<Heading
+				as="h2"
+				sx={{ fontSize: '1.5rem', margin: `1ex 0` }}
+				_hover={{ color: `white`, cursor: `pointer` }}
+				onClick={() => toggleOpen()}>
+				{props.cleanedCategory}
+			</Heading>
+			{(isOpen)
+				?
+				<>
+					{props.data[props.category].map((item, index) => {
+						return <a key={`${item}--${index}`} href={`/${props.category}/${item.slug}`}>
+							<Heading sx={{ fontSize: `1.25rem`, margin: `.5ex 1em` }} _hover={{ color: `white` }}>{item.title}</Heading>
+						</a>
+					})}
+				</>
+				: null}
 		</>
 	)
 }
@@ -80,12 +115,27 @@ export const Sidebar = (props) => {
 			w="100%"
 			bg="brand.900"
 			p={5}
-			sx={{ borderRight: `3px solid`, borderColor: "brand.500" }}
+			sx={{ borderRight: `3px solid`, borderColor: "brand.500", overflowY: 'scroll', userSelect: `none` }}
+			css={{
+				'&::-webkit-scrollbar': {
+					width: '1rem',
+				},
+				'&::-webkit-scrollbar-track': {
+					width: '6px',
+				},
+				'&::-webkit-scrollbar-thumb': {
+					background: "brand.500",
+					borderRadius: '24px',
+				},
+			}}
 		>
 
-			<Toggler label="Public Data">
-				<SidebarList data={data} />
-			</Toggler>
+			<>
+				<Heading>Arcana</Heading>
+				<Box sx={{ marginLeft: '1em' }}>
+					<SidebarList data={data} />
+				</Box>
+			</>
 			{((typeof props.privateData !== 'undefined') && props.privateData)
 				?
 				<>
@@ -94,6 +144,6 @@ export const Sidebar = (props) => {
 					</Toggler>
 				</>
 				: null}
-		</Box>
+		</Box >
 	)
 }

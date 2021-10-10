@@ -3,6 +3,7 @@ import { Sidebar } from '../../components/PageWrapper';
 import { getSignature } from '../../lib/getSignature';
 import { getPrivateData } from '../../lib/getPrivateData';
 import { Center, Heading, Box, VStack, Grid } from '@chakra-ui/react'
+import { ethers } from "ethers";
 import Head from 'next/head';
 
 export default function Page() {

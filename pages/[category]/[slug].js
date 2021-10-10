@@ -7,8 +7,7 @@ import remarkRehype from 'remark-rehype';
 import remarkHtml from 'remark-html';
 import matter from "gray-matter";
 import { Sidebar } from '../../components/PageWrapper';
-import { getSignature } from '../../lib/getSignature';
-import { getPrivateData } from '../../lib/getPrivateData';
+import LogInButton from '../../components/LogIn';
 import { Center, Heading, Box, VStack, Grid } from '@chakra-ui/react'
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
 import { components } from '../../themes/MarkdownComponents'
@@ -35,18 +34,6 @@ export default function Home(props) {
 			const stringifiedPublicData = window.sessionStorage.getItem('publicData');
 			const publicData = JSON.parse(stringifiedPublicData);
 			setPageData(publicData);
-		}
-		if (!window?.sessionStorage.getItem('privateData')) {
-			// get private data IFF it hasn't already been got and the user is allowed
-			const privateResponse = await getPrivateData(await getSignature());
-			const stringifiedPrivateData = JSON.stringify(privateResponse);
-			window.sessionStorage.setItem('privateData', stringifiedPrivateData);
-			setPrivatePageData(privateResponse.data);
-		}
-		if (window?.sessionStorage.getItem('privateData')) {
-			const stringifiedPrivateData = window.sessionStorage.getItem('privateData');
-			const privateData = JSON.parse(stringifiedPrivateData);
-			setPrivatePageData(privateData);
 		}
 	}, []);
 
@@ -114,6 +101,7 @@ export default function Home(props) {
 							</Box>
 						</Grid>
 					</Box>
+					<LogInButton setPrivatePageData={(d) => setPrivatePageData(d)} /> {/* d for data */}
 				</>
 			}
 		</>

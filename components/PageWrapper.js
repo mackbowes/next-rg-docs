@@ -1,6 +1,6 @@
 import styles from './styles/PageWrapper.module.scss';
 import { useState } from 'react';
-import { Box, VStack, Flex, Heading } from '@chakra-ui/react'
+import { Box, VStack, Flex, Heading, Text, Link} from '@chakra-ui/react'
 
 export const PageWrapper = (props) => {
 
@@ -19,35 +19,79 @@ export const PageWrapper = (props) => {
 
 const SidebarList = ({ data }) => {
 
+	let categoryCount = 0;
+	let categories = [];
+	let categoryPosts = {};
+	data.forEach((post) => {
+		if (categories[categoryCount] === post.category) {
+			categoryPosts[categories[categoryCount]].push(post);
+		}
+		if (typeof categories[categoryCount] === 'undefined') {
+			categories[categoryCount] = post.category
+			categoryPosts[categories[categoryCount]] = [];
+			categoryPosts[categories[categoryCount]].push(post);
+		}
+		if (categories[categoryCount] !== post.category) {
+			categoryCount++;
+			categories[categoryCount] = post.category
+			categoryPosts[categories[categoryCount]] = [];
+			categoryPosts[categories[categoryCount]].push(post);
+		}
+
+	})
+	console.log(categoryPosts);
 
 	return (
 		<>
-			{Object.keys(data).map((category) => {
-
-				// create spaces before internal capital letters
-				const categoryCharArray = [...category];
-				const newCategoryCharArray = categoryCharArray.map((char, index) => {
-					if (/[A-Z]/.test(char) && index > 0) {
-						return ` ${char}`
-					} else {
-						return char
-					}
-				});
-				let cleanedCategory = newCategoryCharArray.join('');
-
+			{categories.map((category, index) => {
 				return (
 					<>
-						<SidebarListItem category={category} data={data} cleanedCategory={cleanedCategory} />
-						{/* <Heading as="h2" sx={{ fontSize: '1.5rem', margin: `1ex 0` }}>{cleanedCategory}</Heading>
-						{data[category].map((item, index) => {
-							return <a key={`${item}--${index}`} href={`/${category}/${item.slug}`}>
-								<Heading sx={{ fontSize: `1.25rem`, margin: `.5ex 1em` }} _hover={{ color: `white` }}>{item.title}</Heading>
-							</a>
-						})} */}
-					</>
-				)
+						<Heading as="h3" sx={{ fontSize: '1.5rem' }} key={`${category}--${index}`}>{category}</Heading>
+						<VStack sx={{margin: `1rem 0`, fontSize: `1rem`}}>
+						{categoryPosts[category].map((post, index) => {
+							return (
+								<Box sx={{ width: `100%`, paddingLeft: `1rem`, userSelect: `none`}}>
+								<Link href={`/${post.category}/${post.slug}`} key={`${post.slug}--${index}`}>
+										<a>
+									<Text _hover={{ cursor: `pointer`, color: `brand.100`}}>
+											{post['sidebar_label']}
+									</Text>
+										</a>
+								</Link>
+								</Box>
+							)
+						})}
+						</VStack>
+					</>)
 			})}
 		</>
+
+		// <>
+		// 	{data.map((post) => {
+		// 		// create spaces before internal capital letters
+		// 		const categoryCharArray = [...category];
+		// 		const newCategoryCharArray = categoryCharArray.map((char, index) => {
+		// 			if (/[A-Z]/.test(char) && index > 0) {
+		// 				return ` ${char}`
+		// 			} else {
+		// 				return char
+		// 			}
+		// 		});
+		// 		let cleanedCategory = newCategoryCharArray.join('');
+
+		// 		return (
+		// 			<>
+		// 				<SidebarListItem category={category} data={data} cleanedCategory={cleanedCategory} />
+		// 				{/* <Heading as="h2" sx={{ fontSize: '1.5rem', margin: `1ex 0` }}>{cleanedCategory}</Heading>
+		// 				{data[category].map((item, index) => {
+		// 					return <a key={`${item}--${index}`} href={`/${category}/${item.slug}`}>
+		// 						<Heading sx={{ fontSize: `1.25rem`, margin: `.5ex 1em` }} _hover={{ color: `white` }}>{item.title}</Heading>
+		// 					</a>
+		// 				})} */}
+		// 			</>
+		// 		)
+		// 	})}
+		// </>
 	)
 }
 
@@ -129,21 +173,10 @@ export const Sidebar = (props) => {
 				},
 			}}
 		>
-
-			<>
-				<Heading>Arcana</Heading>
-				<Box sx={{ marginLeft: '1em' }}>
-					<SidebarList data={data} />
-				</Box>
-			</>
-			{((typeof props.privateData !== 'undefined') && props.privateData)
-				?
-				<>
-					<Toggler label="Private Data">
-						<SidebarList data={props.privateData} />
-					</Toggler>
-				</>
-				: null}
+			<Heading>Arcana</Heading>
+			<Box sx={{ marginLeft: '1em' }}>
+				<SidebarList data={data} />
+			</Box>
 		</Box >
 	)
 }

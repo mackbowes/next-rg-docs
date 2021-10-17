@@ -1,16 +1,13 @@
 import { useEffect, useState } from 'react';
 import Head from 'next/head';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import remarkImages from 'remark-images';
-import remarkRehype from 'remark-rehype';
-import remarkHtml from 'remark-html';
+import Markdown from 'react-markdown';
 import matter from "gray-matter";
 import { Sidebar } from '../../components/PageWrapper';
 import LogInButton from '../../components/LogIn';
-import { Center, Heading, Box, VStack, Grid } from '@chakra-ui/react'
-import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
-import { components } from '../../themes/MarkdownComponents'
+import { Heading, Box, Grid } from '@chakra-ui/react'
+import gfm from 'remark-gfm';
+import raw from 'rehype-raw';
+
 
 export default function Home(props) {
 
@@ -21,20 +18,31 @@ export default function Home(props) {
 	const [currentSlug, setCurrentSlug] = useState();
 	const [slugParameters, setSlugParameters] = useState();
 
-	useEffect(async () => {
-		setCurrentSlug(window.location.pathname);
-		if (!window?.sessionStorage.getItem('publicData')) {
-			const response = await fetch('/api/getPublicDocs');
+	// insert custom components into this.
+	const components = {
+
+	} 
+
+	useEffect(() => {
+		const getData = async () => {
+			setCurrentSlug(window.location.pathname);
+			const response = await fetch('/api/getPrivateDocs');
 			const resJson = await response.json();
-			const stringifiedPublicData = JSON.stringify(resJson.data);
-			window.sessionStorage.setItem('publicData', stringifiedPublicData);
-			setPageData(resJson.data);
+			setPageData(resJson.data);	
 		}
-		if (window?.sessionStorage.getItem('publicData')) {
-			const stringifiedPublicData = window.sessionStorage.getItem('publicData');
-			const publicData = JSON.parse(stringifiedPublicData);
-			setPageData(publicData);
-		}
+		// if (!window?.sessionStorage.getItem('publicData')) {
+		// 	const response = await fetch('/api/getPublicDocs');
+		// 	const resJson = await response.json();
+		// 	const stringifiedPublicData = JSON.stringify(resJson.data);
+		// 	window.sessionStorage.setItem('publicData', stringifiedPublicData);
+		// 	setPageData(resJson.data);
+		// }
+		// if (window?.sessionStorage.getItem('publicData')) {
+		// 	const stringifiedPublicData = window.sessionStorage.getItem('publicData');
+		// 	const publicData = JSON.parse(stringifiedPublicData);
+		// 	setPageData(publicData);
+		// }
+		getData();
 	}, []);
 
 	useEffect(() => {
@@ -48,7 +56,7 @@ export default function Home(props) {
 
 	useEffect(() => {
 		if (typeof slugParameters !== 'undefined' && typeof pageData !== 'undefined') {
-			pageData[slugParameters[0]]?.forEach((post) => {
+			pageData?.forEach((post) => {
 				if (slugParameters[1] === post.slug) {
 					const { data, content } = matter(post.fileContent);
 					setCurrentPageData(data);
@@ -71,17 +79,13 @@ export default function Home(props) {
 	}, [pageData, slugParameters, privatePageData])
 
 
-
 	return (
 		<>
 			{(typeof currentPageData !== 'undefined' && typeof currentPageContent !== 'undefined') &&
 				<>
 					<Head>
 						<title>{currentPageData.title}</title>
-					</Head>
-
-
-
+				</Head>
 					<Box h="100vh" w="100vw" sx={{ position: `relative` }}>
 						<Grid templateColumns="1fr 4fr" >
 							<Sidebar data={pageData} />
@@ -90,14 +94,17 @@ export default function Home(props) {
 								padding: `2rem`,
 								color: 'white',
 								overflowY: `scroll`,
-								maxHeight: `100vh`
-							}}>
-								<ReactMarkdown
-									components={ChakraUIRenderer(components)}
-									children={currentPageContent}
-									remarkPlugins={[remarkHtml, remarkRehype, remarkGfm, remarkImages]}
-									escapeHtml={false}
-								/>
+							maxHeight: `100vh`,
+						}}>
+							<Box sx={{maxWidth: `800px`, margin: `0 auto`}}>
+								<Heading as="h2" sx={{ fontSize: `3rem` }}>{currentPageData?.title}</Heading>
+								<div className="md-container">
+										{console.log(currentPageContent)}
+									<Markdown remarkPlugins={[gfm]} rehypePlugins={[raw]}>
+										{currentPageContent}
+									</Markdown>
+								</div>
+							</Box>
 							</Box>
 						</Grid>
 					</Box>

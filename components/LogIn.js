@@ -17,6 +17,10 @@ export default function LogInButton(props) {
 			setAddress(signerAddress)
 		}
 		getAddress()
+
+		if (window?.sessionStorage.getItem('miniAddress')) {
+			setButtonText(window.sessionStorage.getItem('miniAddress'));
+		}
 	}, [])
 
 	const revealData = async () => {
@@ -30,6 +34,7 @@ export default function LogInButton(props) {
 				let first4 = address.substring(0, 4);
 				let last4 = address.substring(address.length - 4, address.length);
 				setButtonText(`${first4}...${last4}`);
+				window.sessionStorage.setItem('miniAddress', `${first4}...${last4}`);
 			}
 		}
 		if (window?.sessionStorage.getItem('privateData')) {

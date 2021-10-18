@@ -60,7 +60,9 @@ export default function LogInButton(props) {
 				padding: `1ex 1em`,
 				border: `2px solid`,
 				borderColor: `brand.500`,
-				transition: `all 0.25s`
+				transition: `all 0.25s`,
+				backgroundColor: `brand.900`,
+				borderRadius: `.5rem`
 			}}
 			_hover={{
 				cursor: 'pointer',

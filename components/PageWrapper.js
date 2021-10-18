@@ -173,10 +173,32 @@ export const Sidebar = (props) => {
 				},
 			}}
 		>
-			<Heading>Arcana</Heading>
+			<Heading sx={{marginBottom: `1rem`}}>Arcana</Heading>
 			<Box sx={{ marginLeft: '1em' }}>
 				<SidebarList data={data} />
 			</Box>
 		</Box >
+	)
+}
+
+
+export const MobileSidebar = (props) => {
+	const isVisible = props.isVisible;
+
+	return (
+		<>
+			{isVisible && 
+			<>
+				<Box sx={{
+					width: `100%`,
+					position: `absolute`,
+					top: `0`,
+					left: `0`,
+				}}>
+					<Sidebar data={props.data} />
+				</Box>
+			</>
+			}
+		</>
 	)
 }

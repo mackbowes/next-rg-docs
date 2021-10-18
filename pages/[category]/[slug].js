@@ -29,10 +29,8 @@ export default function Home(props) {
 		setWindowWith(width);
 		const getData = async () => {	
 			if (!window?.sessionStorage.getItem('publicData')) {
-				const response = await fetch('/api/getPublicDocs');
-				
+				const response = await fetch('/api/getPublicDocs');			
 				const resJson = await response.json();
-				
 				const stringifiedPublicData = JSON.stringify(resJson.data);
 				window.sessionStorage.setItem('publicData', stringifiedPublicData);
 				setPageData(resJson.data);

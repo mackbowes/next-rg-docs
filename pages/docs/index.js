@@ -47,9 +47,8 @@ export default function Page() {
 						<Sidebar data={pageData} />
 						<Center bg="brand.900" h="100%" w="100%" color="brand.500" sx={{ userSelect: 'none' }}>
 							<VStack align="center" spacing="3rem" sx={{ zIndex: `2` }}>
-								<Heading as="h2" size="xl" sx={{ textAlign: `center`, textShadow: `0px 4px black` }}>Hark! Adventurers!<br /> Observe a new tool for slaying Moloch: </Heading>
-								<Heading as="h1" size="3xl" sx={{ textAlign: `center`, textShadow: `0px 4px black` }}>Web3 Powered Documentation</Heading>
-								<Heading as="h2" size="xl" sx={{ textAlign: `center`, textShadow: `0px 4px black` }}>Smart-Contract Secured Arcana</Heading>
+								<Heading as="h1" size="3xl" sx={{ textAlign: `center`, textShadow: `0px 4px black` }}>This is a documentation index page.</Heading>
+								<Heading as="h2" size="xl" sx={{ textAlign: `center`, textShadow: `0px 4px black` }}>Use the sidebar to select a doc and start reading.</Heading>		
 							</VStack>
 						</Center>
 					</Grid>

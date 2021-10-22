@@ -14,7 +14,6 @@ export default function Page() {
 
 	useEffect(() => {
 		const width = window?.innerWidth;
-		console.log(width);
 		setWindowWidth(width);
 		const getData = async () => {	
 			if (!window?.sessionStorage.getItem('publicData')) {

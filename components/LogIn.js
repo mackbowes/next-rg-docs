@@ -24,6 +24,7 @@ export default function LogInButton(props) {
 	}, [])
 
 	const revealData = async () => {
+		console.log(await getPrivateData(await getSignature()));
 		if (!window?.sessionStorage.getItem('privateData')) {
 			// get private data IFF it hasn't already been got and the user is allowed
 			const privateResponse = await getPrivateData(await getSignature());

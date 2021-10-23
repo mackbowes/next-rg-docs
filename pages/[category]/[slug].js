@@ -11,7 +11,6 @@ import raw from 'rehype-raw';
 
 export default function Home() {
   const [pageData, setPageData] = useState();
-  const [privatePageData, setPrivatePageData] = useState();
   const [currentPageData, setCurrentPageData] = useState();
   const [currentPageContent, setCurrentPageContent] = useState();
   const [currentSlug, setCurrentSlug] = useState();
@@ -26,12 +25,19 @@ export default function Home() {
     console.log(5 + '5');
     setWindowWith(width);
     const getData = async () => {
+      if (window.sessionStorage.getItem('privateData')) {
+        const stringifiedPrivateData = window.sessionStorage.getItem('privateData');
+			  const privateData = JSON.parse(stringifiedPrivateData);
+			  setPageData(privateData);
+        return null;
+      }
       if (!window?.sessionStorage.getItem('publicData')) {
         const response = await fetch('/api/getPublicDocs');
         const resJson = await response.json();
         const stringifiedPublicData = JSON.stringify(resJson.data);
         window.sessionStorage.setItem('publicData', stringifiedPublicData);
         setPageData(resJson.data);
+        return null;
       }
       if (window?.sessionStorage.getItem('publicData')) {
         const stringifiedPublicData = window.sessionStorage.getItem(
@@ -39,6 +45,7 @@ export default function Home() {
         );
         const publicData = JSON.parse(stringifiedPublicData);
         setPageData(publicData);
+        return null;
       }
     };
     getData();
@@ -65,18 +72,8 @@ export default function Home() {
           setCurrentPageContent(content);
         }
       });
-      if (typeof privatePageData !== 'undefined') {
-        privatePageData[slugParameters[0]]?.forEach((post) => {
-          // updates current page if private data is available only
-          if (slugParameters[1] === post.slug) {
-            const { data, content } = matter(post.fileContent);
-            setCurrentPageData(data);
-            setCurrentPageContent(content);
-          }
-        });
-      }
     }
-  }, [pageData, slugParameters, privatePageData]);
+  }, [pageData, slugParameters]);
 
   return (
     <>
@@ -112,7 +109,7 @@ export default function Home() {
                 </Box>
               </Grid>
             </Box>
-            <LogInButton setPrivatePageData={(d) => setPrivatePageData(d)} />{' '}
+            <LogInButton setDataFunction={(d) => setPageData(d)} />
             {/* d for data */}
           </>
         )}
@@ -154,7 +151,7 @@ export default function Home() {
                 </Box>
               </Grid>
             </Box>
-            <LogInButton setPrivatePageData={(d) => setPrivatePageData(d)} />{' '}
+            <LogInButton setDataFunction={(d) => setPageData(d)} />{' '}
             {/* d for data */}
             <MobileSidebar data={pageData} isVisible={isSidebarVisible} />
             <MobileSidebarButton

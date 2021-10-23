@@ -6,9 +6,6 @@ import { Center, Heading, Box, VStack, Grid } from '@chakra-ui/react';
 
 export default function Page() {
   const [pageData, setPageData] = useState();
-  const [privatePageData, setPrivatePageData] = useState();
-  const [currentPageData, setCurrentPageData] = useState();
-  const [currentPageContent, setCurrentPageContent] = useState();
   const [windowWidth, setWindowWidth] = useState();
 
   useEffect(() => {
@@ -39,7 +36,7 @@ export default function Page() {
       const publicCategories = Object.keys(pageData);
       console.log(publicCategories);
     }
-  }, [pageData, privatePageData]);
+  }, [pageData]);
 
   return (
     <>
@@ -79,7 +76,7 @@ export default function Page() {
               </Center>
             </Grid>
           </Box>
-          <LogInButton setPrivatePageData={(d) => setPrivatePageData(d)} />{' '}
+          <LogInButton setDataFunction={(d) => setPageData(d)} />{' '}
           {/* d for data */}
         </>
       )}
@@ -119,7 +116,7 @@ export default function Page() {
               </Center>
             </Grid>
           </Box>
-          <LogInButton setPrivatePageData={(d) => setPrivatePageData(d)} />{' '}
+          <LogInButton setDataFunction={(d) => setPageData(d)} />{' '}
           {/* d for data */}
           <MobileSidebar data={pageData} isVisible={isSidebarVisible} />
           <MobileSidebarButton onClick={() => setIsSidebarVisible((v) => !v)} />
